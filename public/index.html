@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Jay's Bank</title>
+
+    <!-- load firebase authentication -->
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
+
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <!-- we will put our teact component inside this div -->
+    <div id="root"></div>
+
+    <!-- load react -->
+    <script src="https://unpkg.com/react/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-router@5.2.1/umd/react-router.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-router-dom@5.2.1/umd/react-router-dom.min.js" crossorigin></script>
+
+    <!-- load our react component. -->
+    <script src="context.js" defer type="text/babel"></script>
+    <script src="navbar.js" defer type="text/babel"></script>
+    <script src="createaccount.js" defer type="text/babel"></script>
+    <script src="login.js" defer type="text/babel"></script>
+    <script src="deposit.js" defer type="text/babel"></script>
+    <script src="withdraw.js" defer type="text/babel"></script>
+    <!-- <script src="transactions.js" defer type="text/babel"></script> -->
+    <script src="balance.js" defer type="text/babel"></script>
+    <script src="alldata.js" defer type="text/babel"></script>
+    <script src="home.js" defer type="text/babel"></script>
+    <script src="index.js" defer type="text/babel"></script>
+
+   <script type="module">
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDALseUuR0sHBAFE1W_yjBrk2noJ5JkzDA",
+        authDomain: "pangoohsproject.firebaseapp.com",
+        projectId: "pangoohsproject",
+        storageBucket: "pangoohsproject.appspot.com",
+        messagingSenderId: "234276670308",
+        appId: "1:234276670308:web:56bf45ca529586a0a78871",
+        measurementId: "G-M00VK3E46W"
+      };
+
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      
+      // clear any existing log-in sessions
+      firebase.auth().signOut()
+
+      // firebase login state
+      firebase.auth().onAuthStateChanged((firebaseUser) => {
+        const LoginStatus = document.getElementById('LoginStatus');	
+        const DepositLink    = document.getElementById('DepositLink');	
+        const WithdrawLink   = document.getElementById('WithdrawLink');	
+        const BalanceLink    = document.getElementById('BalanceLink');	
+        const CreateLink     = document.getElementById('CreateLink');	
+        const LoginLink      = document.getElementById('LoginLink');	
+        const LogoutLink     = document.getElementById('LogoutLink');	
+
+        if (firebaseUser) {
+          console.log('Firebase Auth Logged-In: ' + firebaseUser.email);
+          LoginStatus.innerText = firebaseUser.email;
+          CreateLink.style.display = "none";
+          LoginLink.style.display = "none";
+          LogoutLink.style.display = "inline-block";
+          DepositLink.style.display = "inline-block";
+          WithdrawLink.style.display = "inline-block";
+          BalanceLink.style.display = "inline-block";
+        } else {
+          console.log('Firebase Auth Logged-Out');
+          LoginStatus.innerText = "Logged-Out";
+          CreateLink.style.display = "inline-block";
+          LoginLink.style.display = "inline-block";
+          LogoutLink.style.display = "none";
+          DepositLink.style.display = "none";
+          WithdrawLink.style.display = "none";
+          BalanceLink.style.display = "none";
+        }
+      });
+    </script>
+
+  </body>
+</html>
